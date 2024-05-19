@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react'
-import {Image, Keyboard, Pressable, Text, TextInput, TouchableWithoutFeedback, View} from 'react-native'
+import {Alert, Image, Keyboard, Pressable, Text, TextInput, TouchableWithoutFeedback, View} from 'react-native'
 import {useAuth} from "@/hooks/useAuth";
 import * as ImagePicker from 'expo-image-picker';
 import Button from "@/components/ui/layout/Button";
@@ -34,6 +34,23 @@ const EditProfile: FC = () => {
 
         await getUser()
     };
+
+    const updateUser = () => {
+        fetch(`${url}/users/${user?._id}/updateUserLoginAndEmail`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                "login": login,
+                "email": email
+            })
+        }).then(
+            res => {
+                if (res.ok) {
+                    getUser()
+                    navigate('Profile')
+                }
+            }
+        )
+    }
 
     const getUser = async () => {
          await fetch(`${url}/users/${user?._id}`, {method: 'GET'})
@@ -87,7 +104,7 @@ const EditProfile: FC = () => {
                     <Pressable onPress={() => navigate("Profile")}>
                         <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 16}} className="text-[#eb4034]">Отмена</Text>
                     </Pressable>
-                    <Pressable>
+                    <Pressable onPress={updateUser}>
                         <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 16}} className="text-[#637BFF]">Готово</Text>
                     </Pressable>
                 </View>

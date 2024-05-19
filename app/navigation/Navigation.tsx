@@ -24,7 +24,20 @@ const Navigation: FC = () => {
         setCurrentRoute(navRef.getCurrentRoute()?.name)
 
         const listener = navRef.addListener("state", () => {
-            if (navRef.getCurrentRoute()?.name == "CourseLecture" || navRef.getCurrentRoute()?.name == "CourseMainPage") {
+            if (
+                navRef.getCurrentRoute()?.name == "CourseLecture"
+                || navRef.getCurrentRoute()?.name == "CourseMainPage"
+                || navRef.getCurrentRoute()?.name == "ResetPassword"
+                || navRef.getCurrentRoute()?.name == "EditProfile"
+                || navRef.getCurrentRoute()?.name == "AuthorRequests"
+                || navRef.getCurrentRoute()?.name == "AuthorCourses"
+                || navRef.getCurrentRoute()?.name == "AuthorCourse"
+                || navRef.getCurrentRoute()?.name == "CreateCourse"
+                || navRef.getCurrentRoute()?.name == "CreateLecture"
+                || navRef.getCurrentRoute()?.name == "CreateExercise"
+                || navRef.getCurrentRoute()?.name == "UpdateLecture"
+                || navRef.getCurrentRoute()?.name == "UpdateExercise"
+            ) {
                 setCurrentRoute(undefined)
             } else {
                 setCurrentRoute(navRef.getCurrentRoute()?.name)

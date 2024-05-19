@@ -1,21 +1,70 @@
 import React, {FC, useEffect} from 'react'
-import {Image, Pressable, ScrollView, Text, View} from 'react-native'
+import {Alert, Image, Pressable, ScrollView, Text, View} from 'react-native'
 import {useAuth} from "@/hooks/useAuth";
 import { MaterialIcons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import {url} from "../../../../config/config";
-import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 
 const Profile: FC = () => {
     const {user, setUser} = useAuth()
-    const {navigate} = useNavigation()
+    const navigation = useNavigation()
 
     const logout = () => {
         setUser(null)
     }
 
+    const changePassword = () => {
+        // setUser(null)
+        navigation.navigate("ResetPassword")
+    }
+
     const edit = () => {
-        navigate("EditProfile")
+        navigation.navigate("EditProfile")
+    }
+
+    const createAuthorRequest = async () => {
+        if (!user) {
+            return
+        }
+
+        let isReg = true
+
+        await fetch(`${url}/requests/user/${user?._id}`, {
+            method: 'GET',
+        }).then(
+            res =>  {
+                if (res.ok) {
+                    Alert.alert("Вы уже создали заявку")
+                    return
+                } else if (res.status === 404) {
+                    console.log("asd")
+                    isReg = false
+                } else {
+                    Alert.alert("Произошла ошибка")
+                    return
+                }
+            }
+        )
+
+        if (!isReg) {
+            fetch(`${url}/requests/`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    "author_id": user?._id as unknown as number
+                })
+            }).then(
+                res => {
+                    if (res.ok) {
+                        Alert.alert("Заявка создана", "Ожидайте подтверждения администратора")
+                    } else {
+                        Alert.alert("Произошла ошибка")
+                    }
+                }
+            )
+        } else {
+            console.log(isReg)
+        }
     }
 
     return (
@@ -47,18 +96,35 @@ const Profile: FC = () => {
             <ScrollView className="w-full h-full p-5">
                 <View className="w-full">
                     <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 15}} className="mt-2 text-2xl font-bold text-[#91919F]">Настройки аккаунта</Text>
-                    {/*<Pressable onPress={() => console.log("edit")} style={{borderBottomWidth: 0.5}} className="flex-row mt-7 items-center justify-between pb-2">*/}
-                    {/*    <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Стать автором</Text>*/}
-                    {/*    <SimpleLineIcons name="arrow-right" size={16} color="black" />*/}
-                    {/*</Pressable>*/}
-                    <Pressable onPress={() => console.log("edit")} className="flex-row mt-7 items-center justify-between pb-2">
-                        <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Стать автором</Text>
-                        <SimpleLineIcons name="arrow-right" size={16} color="black" />
-                    </Pressable>
-                    <Pressable onPress={logout} className="flex-row mt-7 items-center justify-between pb-2">
+                    {user?.role === "user" ?
+                        <Pressable onPress={createAuthorRequest} className="flex-row mt-7 items-center justify-between pb-2">
+                            <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Стать автором</Text>
+                            <SimpleLineIcons name="arrow-right" size={16} color="black" />
+                        </Pressable>
+                        :
+                        <></>
+                    }
+
+                    {user?.role === "author" ?
+                        <Pressable onPress={() => navigation.navigate("AuthorCourses")} className="flex-row mt-7 items-center justify-between pb-2">
+                            <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Мои курсы</Text>
+                            <SimpleLineIcons name="arrow-right" size={16} color="black" />
+                        </Pressable>
+                        :
+                        <></>
+                    }
+
+                    <Pressable onPress={changePassword} className="flex-row mt-7 items-center justify-between pb-2">
                         <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Сменить пароль</Text>
                         <SimpleLineIcons name="arrow-right" size={16} color="black" />
                     </Pressable>
+                    {user?.role === "admin" ?
+                        <Pressable onPress={() => navigation.navigate("AuthorRequests")} className="flex-row mt-7 items-center justify-between pb-2">
+                            <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Заявки на авторство</Text>
+                            <SimpleLineIcons name="arrow-right" size={16} color="black" />
+                        </Pressable>
+                        : <></>
+                    }
                     <Pressable onPress={logout} className="flex-row mt-7 items-center justify-between pb-2">
                         <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Выйти</Text>
                         <SimpleLineIcons name="arrow-right" size={16} color="black" />

@@ -10,6 +10,14 @@ import CourseMainPage from "@/components/screens/course/CourseMainPage";
 import navigation from "@/navigation/Navigation";
 import CourseLecture from "@/components/screens/course/CourseLecture";
 import EditProfile from "@/components/screens/profile/EditProfile";
+import AuthorRequests from "@/components/screens/profile/AuthorRequests";
+import AuthorCourses from "@/components/screens/course/AuthorCourses";
+import AuthorCourse from "@/components/screens/course/AuthorCourse";
+import CreateCourse from "@/components/screens/course/CreateCourse";
+import CreateLecture from "@/components/screens/course/CreateLecture";
+import CreateExercise from "@/components/screens/course/CreateExercise";
+import UpdateLecture from "@/components/screens/course/UpdateLecture";
+import UpdateExercise from "@/components/screens/course/UpdateExercise";
 
 const Stack = createNativeStackNavigator<TypeRootStackParamList>()
 
@@ -24,6 +32,15 @@ const PrivateNavigation: FC = () => {
                     <Stack.Screen name="CourseMainPage" component={CourseMainPage}/>
                     <Stack.Screen name="CourseLecture" component={CourseLecture}/>
                     <Stack.Screen name="EditProfile" component={EditProfile}/>
+                    <Stack.Screen name="ResetPassword" component={ResetPassword}/>
+                    <Stack.Screen name="AuthorRequests" component={AuthorRequests}/>
+                    <Stack.Screen name="AuthorCourses" component={AuthorCourses}/>
+                    <Stack.Screen name="AuthorCourse" component={AuthorCourse}/>
+                    <Stack.Screen name="CreateCourse" component={CreateCourse}/>
+                    <Stack.Screen name="CreateLecture" component={CreateLecture}/>
+                    <Stack.Screen name="CreateExercise" component={CreateExercise}/>
+                    <Stack.Screen name="UpdateLecture" component={UpdateLecture}/>
+                    <Stack.Screen name="UpdateExercise" component={UpdateExercise}/>
                 </>
                 : (
                     <>

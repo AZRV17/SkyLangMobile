@@ -18,15 +18,6 @@ export type TypeCourseState = ICourse | null
 const Home: FC = () => {
     const navigation = useNavigation();
     const user = useAuth()
-    // let c: ICourse = {
-    //     _id: '1',
-    //     author: {_id: '1', login: 'admin'},
-    //     description: 'Simple eng course',
-    //     icon: '1',
-    //     language: 'eng',
-    //     name: 'English',
-    //     grate: 4
-    // }
     const [courses, setCourses] = useState<[TypeCourseState]>([null])
     const [loading, setLoading] = useState(false);
 
@@ -37,14 +28,11 @@ const Home: FC = () => {
     useFocusEffect(
         React.useCallback(() => {
             const onBackPress = () => {
-                // Предотвращаем нажатие кнопки "Назад"
-                return true; // Возвращаем true для предотвращения перехода на предыдущую страницу
+                return true;
             };
 
-            // Подписываемся на событие аппаратной кнопки "Назад" (Android) или на жест "Swipe Back" (iOS)
             navigation.addListener('beforeRemove', onBackPress);
 
-            // Отписываемся от события при размонтировании компонента
             return () => navigation.removeListener('beforeRemove', onBackPress);
         }, [navigation])
     );
@@ -70,16 +58,16 @@ const Home: FC = () => {
 
                     for (let course of data) {
                         let courseData: ICourse = {
-                            _id: course.course.id,
+                            _id: course.id,
                             author: {_id: course.author.id, login: course.author.login},
-                            description: course.course.description,
-                            grate: course.course.rating,
-                            language: course.course.language,
-                            name: course.course.name
+                            description: course.description,
+                            grate: course.rating,
+                            language: course.language,
+                            name: course.name
                         }
 
-                        if (course.course.icon !== null && course.course.icon !== undefined && course.course.icon !== "") {
-                            await fetch(`${url}/courses/${course.course.id}/icon`, {method: 'GET'})
+                        if (course.icon !== null && course.icon !== undefined && course.icon !== "") {
+                            await fetch(`${url}/courses/${course.id}/icon`, {method: 'GET'})
                                 .then(
                                     res => {
                                         if (res.ok) {

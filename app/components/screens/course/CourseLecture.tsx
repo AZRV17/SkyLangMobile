@@ -13,9 +13,12 @@ import {ILecture} from "@/types/lecture.interface";
 import Markdown, {MarkdownIt} from "react-native-markdown-display";
 import navigation from "@/navigation/Navigation";
 import {useNavigation} from "@react-navigation/native";
+import {IExercise} from "@/types/exercise.interface";
+import {CheckBox} from "react-native-elements";
 
 type CourseLecturePageProps = StackScreenProps<TypeRootStackParamList, 'CourseLecture'>;
 type TypeLectureState = ILecture | null
+type TypeExerciseState = IExercise | null
 
 const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
     const navigation = useNavigation();
@@ -23,11 +26,26 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
     const { course } = route.params;
     // @ts-ignore
     const [index, setIndex] = useState(route.params.index)
+    const [counter, setCounter] = useState(1)
     const { user } = useAuth();
     const [lectures, setLectures] = useState<[TypeLectureState]>([null])
+    const [exercises, setExercises] = useState<[TypeExerciseState]>([null])
+    const [checked, setChecked] = useState(0)
 
     const onNextPress = () => {
-        if (index === lectures.length - 1) {
+        if (counter/2 >= exercises.length || counter/2 >= lectures.length) {
+            Alert.alert("Больше лекций нет")
+            return
+        }
+
+        setCounter(counter + 1)
+        if (counter % 2 !== 0) {
+            console.log(counter)
+            return
+        }
+
+        if (index === lectures.length - 1 || index === exercises.length - 1) {
+            console.log(exercises.length)
             Alert.alert("Больше лекций нет")
             return
         }
@@ -35,6 +53,17 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
     }
 
     const onPrevPress = () => {
+        if (counter === 1) {
+            Alert.alert("Больше лекций нет")
+            return
+        }
+
+        setCounter(counter - 1)
+        if (counter % 2 === 0) {
+            return
+        }
+
+
         if (index === 0) {
             Alert.alert("Больше лекций нет")
             return
@@ -43,6 +72,18 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
     }
 
     const sortLecturesById = (a: TypeLectureState, b: TypeLectureState) => {
+        // @ts-ignore
+        if (a?.id < b?.id) {
+            return -1
+        }
+        // @ts-ignore
+        if (a?.id > b?.id) {
+            return 1
+        }
+        return 0
+    }
+
+    const sortExercisesById = (a: TypeExerciseState, b: TypeExerciseState) => {
         // @ts-ignore
         if (a?.id < b?.id) {
             return -1
@@ -76,8 +117,75 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
                     }
                 }
             )
+
+        fetch(`${url}/exercises/course/${course?._id}`, {method: 'GET'})
+            .then(
+                res => {
+                    if (res.ok) {
+                        res.json().then(
+                            data => {
+                                if (data.length === 0) {
+                                    Alert.alert("Заданий нет")
+                                    // @ts-ignore
+                                    navigation.navigate('Home')
+                                    return
+                                }
+
+                                data.sort(sortExercisesById)
+
+                                setExercises(data)
+                            }
+                        )
+                    }
+                }
+            )
     }, []);
 
+    const submit = () => {
+        switch (checked) {
+            case 0: {
+                if (exercises[index]?.correctAnswer === exercises[index]?.firstVariant) {
+                    Alert.alert("Верно")
+                } else {
+                    Alert.alert("Неверно")
+                }
+
+                break
+            }
+            case 1: {
+                if (exercises[index]?.correctAnswer === exercises[index]?.secondVariant) {
+                    Alert.alert("Верно")
+                } else {
+                    Alert.alert("Неверно")
+                }
+
+                break
+            }
+            case 2: {
+                if (exercises[index]?.correctAnswer === exercises[index]?.thirdVariant) {
+                    Alert.alert("Верно")
+                } else {
+                    Alert.alert("Неверно")
+                }
+
+                break
+            }
+            case 3: {
+                if (exercises[index]?.correctAnswer === exercises[index]?.fourthVariant) {
+                    Alert.alert("Верно")
+                } else {
+                    Alert.alert("Неверно")
+                }
+
+                break
+            }
+            default: {
+                break
+            }
+        }
+    }
+
+    // @ts-ignore
     return (
         <View className="flex-1 bg-white">
             <LinearGradient
@@ -103,11 +211,70 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
             </LinearGradient>
             <ScrollView className="mt-3 h-[75vh] flex-1">
                 <View className="p-5 mb-[7vh]">
-                    <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 23}} className="text-black text-center">Лекция: {lectures[index]?.name}</Text>
-                    {/*<Text style={{fontFamily: "Montserrat_400Regular", fontSize: 15}} className="text-black mt-2">{lectures[index]?.description}</Text>*/}
-                    <View className="mt-3 p-5 bg-[#F6F6F6] rounded-2xl mb-3">
-                        <Markdown style={styles.markdown}>{lectures[index]?.description}</Markdown>
-                    </View>
+                    {counter % 2 === 0 ?
+                        <>
+                            <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 23}} className="text-black text-center">Задание: {exercises[index]?.name}</Text>
+                            <Text style={{fontFamily: "Montserrat_400Regular", fontSize: 15}} className="text-black mt-2 text-center">{exercises[index]?.description}</Text>
+                            <View className="mt-3 justify-center pl-[35%]">
+                                <CheckBox
+                                    left
+                                    title={exercises[index]?.firstVariant}
+                                    checkedIcon='check-square'
+                                    uncheckedIcon='square'
+                                    containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent'}}
+                                    checked={checked === 0}
+                                    onPress={() => {
+                                        setChecked(0)
+                                    }}
+                                />
+                                <CheckBox
+                                    left
+                                    title={exercises[index]?.secondVariant}
+                                    checkedIcon='check-square'
+                                    uncheckedIcon='square'
+                                    containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent'}}
+                                    checked={checked === 1}
+                                    onPress={() => {
+                                        setChecked(1)
+                                    }}
+                                />
+                                <CheckBox
+                                    left
+                                    title={exercises[index]?.thirdVariant}
+                                    checkedIcon='check-square'
+                                    uncheckedIcon='square'
+                                    containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent'}}
+                                    checked={checked === 2}
+                                    onPress={() => {
+                                        setChecked(2)
+                                    }}
+                                />
+                                <CheckBox
+                                    left
+                                    title={exercises[index]?.fourthVariant}
+                                    checkedIcon='check-square'
+                                    uncheckedIcon='square'
+                                    containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent'}}
+                                    checked={checked === 3}
+                                    onPress={() => {
+                                        setChecked(3)
+                                    }}
+                                />
+                            </View>
+                            <Button classNaming="mt-5 bg-[#637BFF] self-center justify-center items-center rounded-3xl text-white w-[50%] h-[5vh] p-1" onPress={submit}>
+                                <Text>Ответить</Text>
+                            </Button>
+                        </>
+                        :
+                        <>
+                            <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 23}} className="text-black text-center">Лекция: {lectures[index]?.name}</Text>
+                            {/*<Text style={{fontFamily: "Montserrat_400Regular", fontSize: 15}} className="text-black mt-2">{lectures[index]?.description}</Text>*/}
+                            <View className="mt-3 p-5 bg-[#F6F6F6] rounded-2xl mb-3">
+                                <Markdown style={styles.markdown}>{lectures[index]?.description}</Markdown>
+                            </View>
+                        </>
+                    }
+
                 </View>
             </ScrollView>
             <View className="flex-row self-center mb-6 items-center justify-center w-[100%]" style={{ position: 'absolute', bottom: 0, alignSelf: 'center', backgroundColor: 'rgba(0, 0, 0, 0.0)'}}>

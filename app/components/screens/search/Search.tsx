@@ -46,16 +46,16 @@ const Search: FC = () => {
 
                     for (let course of data) {
                         let courseData: ICourse = {
-                            _id: course.course.id,
+                            _id: course.id,
                             author: {_id: course.author.id, login: course.author.login},
-                            description: course.course.description,
-                            grate: course.course.rating,
-                            language: course.course.language,
-                            name: course.course.name
+                            description: course.description,
+                            grate: course.rating,
+                            language: course.language,
+                            name: course.name
                         }
 
-                        if (course.course.icon !== null && course.course.icon !== undefined && course.course.icon !== "") {
-                            await fetch(`${url}/courses/${course.course.id}/icon`, {method: 'GET'})
+                        if (course.icon !== null && course.icon !== undefined && course.icon !== "") {
+                            await fetch(`${url}/courses/${course.id}/icon`, {method: 'GET'})
                                 .then(
                                     res => {
                                         if (res.ok) {

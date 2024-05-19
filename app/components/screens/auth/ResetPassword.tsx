@@ -150,7 +150,7 @@ const ResetPassword: FC = () => {
         setModalVisible(false)
         setTries(tries + 1)
         if (tries >= 3) {
-            navigation.navigate('Auth')
+            navigation.navigate("Auth")
         }
 
         handleResendCode()
@@ -169,7 +169,7 @@ const ResetPassword: FC = () => {
                 console.log(data)
             })
 
-        navigation.navigate('Auth')
+        navigation.navigate("Auth")
     }
 
     return (
@@ -244,6 +244,7 @@ const ResetPassword: FC = () => {
                                     <PasswordInput onChange={setPassword} classNaming={"border-[#408fd2] mt-8"} value={password}/>
                                     <Text className="text-lg mt-2 text-red-600">{error}</Text>
                                     <Button onPress={() => {resetPassword()}} classNaming='rounded-full font-medium text-center mt-3 bg-[#267dc9] pt-3.5 pb-3.5 pl-12 pr-12 active:bg-[#1276e3]'>Восстановить</Button>
+                                    <Pressable onPress={() => navigation.navigate("Home")} className="self-center justify-self-center mt-3 justify-center items-center"><Text className="color-[#6f7173]">Отменить</Text></Pressable>
                                 </>}
                         </View>
                     </View>

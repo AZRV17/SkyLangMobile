@@ -13,6 +13,7 @@ export default function App() {
           <AuthProvider>
               <SafeAreaProvider>
                   <Navigation/>
+                  {/*<Text>asdsadsa</Text>*/}
               </SafeAreaProvider>
           </AuthProvider>
           <StatusBar style="dark"/>
