@@ -129,7 +129,6 @@ const Home: FC = () => {
                     <Text style={{fontFamily: "Manrope_400Regular", fontSize: 15}}>Добро пожаловать</Text>
                     <Text style={{fontFamily: "Manrope_600SemiBold", fontSize: 20}}>{user.user?.login}</Text>
                 </View>
-                <Feather name="bell" size={30} color="#F19A1A" style={{marginLeft: "auto", marginRight: 10}}/>
             </View>
             <ScrollView
                 className="flex-1 p-3 pb-0 rounded-t-3xl bg-white"
@@ -139,46 +138,6 @@ const Home: FC = () => {
                     <RefreshControl refreshing={loading} onRefresh={fetchData}/>
                 }
             >
-                <View style={{shadowOffset: {width: 0, height: 2.6}, shadowOpacity: 0.35, shadowRadius: 2.5, shadowColor: "black"}}>
-                    <LinearGradient
-                        className="h-[40vh] rounded-3xl items-center p-5"
-                        colors={["#21C8F6", "#637BFF"]}
-                        start={{x: 1, y: .4}}
-                        end={{x: 1, y: 1}}
-                    >
-                        <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 22}} className="text-white">Ваш прогресс</Text>
-                        <View className="mt-5 items-center">
-                            <Text style={{fontFamily: "Montserrat_400Regular", fontSize: 16}} className="text-white">Golang</Text>
-                            <View className="mt-1 flex-row items-center justify-center">
-                                <Octicons name="star-fill" size={14} color="#FFC960"/>
-                                <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 14}} className="ml-1 text-white">4.5 &#x2022; By Sarah Ahmed &#x2022; All Level</Text>
-                            </View>
-                            <View className="mt-2 w-[300]">
-                                <ProgressBar progress={.1} fillStyle={{backgroundColor: "#48DA89"}} style={{borderWidth: 3}} className="rounded-3xl bg-white h-[2.3vh] border-white" indeterminate={false}/>
-                            </View>
-                        </View>
-                        <View className="mt-2 items-center">
-                            <Text style={{fontFamily: "Montserrat_400Regular", fontSize: 16}} className="text-white">Rust</Text>
-                            <View className="mt-1 flex-row items-center">
-                                <Octicons name="star-fill" size={14} color="#FFC960"/>
-                                <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 14}} className="ml-1 text-white">4.5 &#x2022; By Sarah Ahmed &#x2022; All Level</Text>
-                            </View>
-                            <View className="mt-2 w-[300]">
-                                <ProgressBar progress={.5} fillStyle={{backgroundColor: "#F19A1A"}} style={{borderWidth: 3}} className="rounded-3xl bg-white h-[2.3vh] border-white" indeterminate={false}/>
-                            </View>
-                        </View>
-                        <View className="mt-2 items-center">
-                            <Text style={{fontFamily: "Montserrat_400Regular", fontSize: 16}} className="text-white">ML&AI</Text>
-                            <View className="mt-1 flex-row items-center">
-                                <Octicons name="star-fill" size={14} color="#FFC960"/>
-                                <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 14}} className="ml-1 text-white">4.5 &#x2022; By Sarah Ahmed &#x2022; All Level</Text>
-                            </View>
-                            <View className="mt-2 w-[300]">
-                                <ProgressBar progress={.7} fillStyle={{backgroundColor: "#E73959"}} style={{borderWidth: 3}} className="rounded-3xl bg-white h-[2.3vh] border-white" indeterminate={false}/>
-                            </View>
-                        </View>
-                    </LinearGradient>
-                </View>
                 <View className="mt-3 mb-5 items-center">
                     <View className="w-full flex-row justify-center items-center pl-10 pr-10">
                         <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
