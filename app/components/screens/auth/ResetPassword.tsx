@@ -95,18 +95,6 @@ const ResetPassword: FC = () => {
         return () => clearInterval(intervalId);
     }, [timer]);
 
-    // Метод для загрузки шрифтов
-    const [fontsLoaded] = useFonts({
-        Prompt_400Regular,
-        Inter_600SemiBold,
-        Manrope_600SemiBold,
-        Manrope_400Regular,
-        Inter_500Medium,
-    });
-    if (!fontsLoaded) {
-        return <Text>Loading...</Text>;
-    }
-
     /**
      * Метод для получения нового кода
      */
