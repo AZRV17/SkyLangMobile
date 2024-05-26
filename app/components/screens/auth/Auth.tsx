@@ -14,6 +14,10 @@ import {FontAwesome5} from '@expo/vector-icons';
 import PasswordInput from "@/components/ui/layout/PasswordInput";
 import {useNavigation} from "@react-navigation/native";
 
+
+/**
+ * Отображает страницу авторизации
+ */
 const Auth: FC = () => {
     const [isReg, setIsReg] = useState(false)
     const [login, setLogin] = useState('')
@@ -29,6 +33,9 @@ const Auth: FC = () => {
 
     const {setUser} = useAuth()
 
+    /**
+     * Метод обработчик нажатия на кнопку "Войти"
+     */
     const onClickSingIn = async () => {
         var emailRe = new RegExp(".+@.+\\..+");
 
@@ -88,14 +95,6 @@ const Auth: FC = () => {
 
                         reset();
                     }
-                    // data.avatar = avatar
-                    //
-                    // setUser({
-                    //     _id: data.id,
-                    //     ...data
-                    // })
-                    //
-                    // reset()
                 }
             })
             .catch(error => {
@@ -105,6 +104,9 @@ const Auth: FC = () => {
             });
     }
 
+    /**
+     * Метод обработчик нажатия на кнопку "Зарегистрироваться"
+     */
     const onClickSingUp = () => {
         var emailRe = new RegExp(".+@.+\\..+");
 
@@ -172,8 +174,11 @@ const Auth: FC = () => {
             });
     }
 
-    const isLoading = false
+    const iОтображение html кода компонентаsLoading = false
 
+    /**
+     * Метод для загрузки шрифтов
+     */
     const [fontsLoaded] = useFonts({
         Manrope_400Regular,
         Prompt_400Regular,
@@ -182,9 +187,11 @@ const Auth: FC = () => {
     if (!fontsLoaded) {
         return <Text>Loading...</Text>;
     }
-
     const user = useAuth()
 
+    /**
+     * Отображение html кода компонента
+     */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View className="justify-center items-center mt-[20vh]">

@@ -9,6 +9,11 @@ import Button from "@/components/ui/layout/Button";
 
 type UpdateLectureProps = StackScreenProps<TypeRootStackParamList, 'UpdateLecture'>
 
+/**
+ * Компонент для обновления лекции
+ * @param route - активная страница
+ * @constructor
+ */
 const UpdateLecture: FC<UpdateLectureProps> = ({route}) => {
     const navigation = useNavigation()
     // @ts-ignore
@@ -18,6 +23,9 @@ const UpdateLecture: FC<UpdateLectureProps> = ({route}) => {
     const [title, setTitle] = useState(lecture.name)
     const [description, setDescription] = useState(lecture.description)
 
+    /**
+     * Метод для обновления лекции
+     */
     const updateLecture = () => {
         fetch(url + "/lectures/" + lecture.id, {
             method: 'PUT',
@@ -39,6 +47,9 @@ const UpdateLecture: FC<UpdateLectureProps> = ({route}) => {
         )
     }
 
+    /**
+     * Метод для удаления лекции
+     */
     const deleteLecture = () => {
         fetch(url + "/lectures/" + lecture.id, {
             method: 'DELETE',
@@ -51,6 +62,9 @@ const UpdateLecture: FC<UpdateLectureProps> = ({route}) => {
         )
     }
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View className="flex-1 bg-white">

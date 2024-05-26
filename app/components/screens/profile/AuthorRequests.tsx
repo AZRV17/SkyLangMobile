@@ -13,6 +13,9 @@ const AuthorRequests: FC = () => {
     const [loading, setLoading] = useState(false);
     const [requests, setRequests] = useState<[TypeAuthorRequestState]>([null])
 
+    /**
+     * Метод для получения запросов на авторство
+     */
     const fetchData = () => {
         // setLoading(true);
         fetch(`${url}/requests/`, {method: 'GET'}).then(res => {
@@ -32,6 +35,11 @@ const AuthorRequests: FC = () => {
         })
     }
 
+    /**
+     * Метод для подтверждения запроса,
+     * принимает id запроса.
+     * @param id
+     */
     const acceptRequest = (id: number) => {
         fetch(`${url}/requests/${id}/`, {method: 'DELETE'}).then(res => {
             if (res.ok) {
@@ -44,6 +52,9 @@ const AuthorRequests: FC = () => {
         fetchData()
     }, [])
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <View className="bg-[#408fd2">
             <ScrollView

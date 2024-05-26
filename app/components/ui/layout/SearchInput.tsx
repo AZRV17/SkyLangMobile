@@ -10,6 +10,12 @@ interface SearchInputProps {
     courses: TypeCourseState[]
 }
 
+/**
+ * Компонент для поиска курсов
+ *
+ * @param {string} query - запрос поиска
+ * @return {void}
+ */
 const SearchInput: FC<SearchInputProps> = ({onChangeQuery, onChangeFiltredCourses, courses, query}) => {
 
     const filterCourses = (query: string) => {

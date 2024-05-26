@@ -9,6 +9,12 @@ import Button from "@/components/ui/layout/Button";
 
 
 type UpdateExerciseProps = StackScreenProps<TypeRootStackParamList, 'UpdateExercise'>
+
+/**
+ * Компонент для обновления задания
+ * @param route - активная страница
+ * @constructor
+ */
 const UpdateExercise: FC<UpdateExerciseProps> = ({route}) => {
     const navigation = useNavigation()
     // @ts-ignore
@@ -24,6 +30,9 @@ const UpdateExercise: FC<UpdateExerciseProps> = ({route}) => {
     const [correctAnswer, setCorrectAnswer] = useState(exercise.correctAnswer)
     const [difficulty, setDifficulty] = useState(exercise.difficulty)
 
+    /**
+     * Метод для обновления задания
+     */
     const updateExercise = () => {
         fetch(url + "/exercises/" + exercise.id, {
             method: 'PUT',
@@ -51,6 +60,9 @@ const UpdateExercise: FC<UpdateExerciseProps> = ({route}) => {
         )
     }
 
+    /**
+     * Метод для удаления задания
+     */
     const deleteExercise = () => {
         fetch(url + "/exercises/" + exercise.id, {
             method: 'DELETE',
@@ -63,6 +75,9 @@ const UpdateExercise: FC<UpdateExerciseProps> = ({route}) => {
         )
     }
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View className="flex-1 bg-white">

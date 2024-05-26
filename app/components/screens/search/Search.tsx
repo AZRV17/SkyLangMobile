@@ -13,6 +13,10 @@ import {ICourse} from "@/types/card.interface";
 import {SearchBar} from "react-native-screens";
 import SearchInput from "@/components/ui/layout/SearchInput";
 
+/**
+ * Компонент поиска курсов
+ * @constructor
+ */
 const Search: FC = () => {
     const [courses, setCourses] = useState<[TypeCourseState]>([null])
     const [loading, setLoading] = useState(false);
@@ -25,6 +29,9 @@ const Search: FC = () => {
         return <Loader />
     }
 
+    /**
+     * Метод для проверки регистрации пользователя в курсе,
+     */
     const checkIsUserRegInCourse = (c: TypeCourseState) => {
         if (user) {
             for (let course of user.user?.courses!) {
@@ -36,6 +43,9 @@ const Search: FC = () => {
         return false
     }
 
+    /**
+     * Метод для получения списка курсов
+     */
     const fetchData = () => {
         // setLoading(true);
         fetch(`${url}/courses/`, {method: 'GET'}).then(res => {
@@ -77,12 +87,14 @@ const Search: FC = () => {
                     setCourses(courses)
                     setFilteredCourses(courses)
                     setSearchQuery("")
-                    // setLoading(false);
                 })
             }
         })
     }
 
+    /**
+     * Метод для проверки поискового запроса
+     */
     const checkQuery = () => {
         if (searchQuery.length === 0) {
             return <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 15}}>Все курсы</Text>
@@ -99,6 +111,9 @@ const Search: FC = () => {
         fetchData()
     }, []);
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <View className="flex-1">
 

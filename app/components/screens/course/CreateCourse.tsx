@@ -5,6 +5,10 @@ import {useAuth} from "@/hooks/useAuth";
 import * as ImagePicker from "expo-image-picker";
 import {url} from "../../../../config/config";
 
+/**
+ * Компонент для создания курса
+ * @constructor
+ */
 const CreateCourse: FC = () => {
     const {navigate} = useNavigation()
     const {user, setUser} = useAuth()
@@ -13,6 +17,9 @@ const CreateCourse: FC = () => {
     const [description, setDescription] = useState<string>("")
     const [lang, setLang] = useState<string>("")
 
+    /**
+     * Метод для создания курса
+     */
     const createCourse = () => {
         fetch(url + "/courses/", {
             method: 'POST',
@@ -35,6 +42,9 @@ const CreateCourse: FC = () => {
         )
     }
 
+    /**
+     * Метод для выбора изображения из галереи
+     */
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,6 +60,9 @@ const CreateCourse: FC = () => {
         }
     };
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View className="flex-1 items-center bg-white">

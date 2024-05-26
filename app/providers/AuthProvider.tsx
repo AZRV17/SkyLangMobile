@@ -14,6 +14,12 @@ export const AuthContext = createContext({} as IContext)
 
 let ignore = Splash.preventAutoHideAsync()
 
+/**
+ * Инициализирует контекст аутентификации.
+ *
+ * @param {PropsWithChildren<unknown>} children - компонент, внутри которого будут отображаться контексты
+ * @return {JSX.Element} html код компонента.
+ */
 const AuthProvider: FC<PropsWithChildren<unknown>> = ({children}) => {
     const [user, setUser] = useState<TypeUserState>(null)
 

@@ -13,6 +13,9 @@ const EditProfile: FC = () => {
     const [email, setEmail] = useState(user?.email)
     const {navigate} = useNavigation()
 
+    /**
+     * Метод для выбора изображения из галереи
+     */
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,6 +38,9 @@ const EditProfile: FC = () => {
         await getUser()
     };
 
+    /**
+     * Метод для обновления профиля
+     */
     const updateUser = () => {
         fetch(`${url}/users/${user?._id}/updateUserLoginAndEmail`, {
             method: 'PUT',
@@ -52,6 +58,9 @@ const EditProfile: FC = () => {
         )
     }
 
+    /**
+     * Метод для получения пользователя
+     */
     const getUser = async () => {
          await fetch(`${url}/users/${user?._id}`, {method: 'GET'})
             .then(
@@ -97,6 +106,9 @@ const EditProfile: FC = () => {
             )
     }
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View className="flex-1 items-center bg-white">

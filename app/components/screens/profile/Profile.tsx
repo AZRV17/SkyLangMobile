@@ -6,23 +6,39 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import {url} from "../../../../config/config";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 
+/**
+ * Компонент профиля
+ * @constructor
+ */
 const Profile: FC = () => {
     const {user, setUser} = useAuth()
     const navigation = useNavigation()
 
+    /**
+     * Метод для обработки нажатия на кнопку "Выйти из аккаунта"
+     */
     const logout = () => {
         setUser(null)
     }
 
+    /**
+     * Метод для обработки нажатия на кнопку "Изменить пароль"
+     */
     const changePassword = () => {
         // setUser(null)
         navigation.navigate("ResetPassword")
     }
 
+    /**
+     * Метод для обработки нажатия на кнопку "Редактировать профиль"
+     */
     const edit = () => {
         navigation.navigate("EditProfile")
     }
 
+    /**
+     * Метод для обработки нажатия на кнопку "Создать заявку"
+     */
     const createAuthorRequest = async () => {
         if (!user) {
             return
@@ -67,6 +83,56 @@ const Profile: FC = () => {
         }
     }
 
+    /**
+     * Метод для получения информации о пользователе
+     */
+    useEffect(() => {
+        fetch(`${url}/users/${user?._id}`, {
+            method: 'GET',
+        }).then(res => {
+            return res.json(); // Парсим JSON из тела ответа
+        })
+            .then(async data => {
+                    let updatedUser = {...data};
+
+                    if (data.avatar !== null && data.avatar !== undefined && data.avatar !== "") {
+                        await fetch(`${url}/users/${data.id}/avatar`, {method: 'GET'})
+                            .then(res => {
+                                res.blob()
+                                    .then(blob => {
+                                        // Создаем объект Blob URL из Blob
+                                        let avatar = URL.createObjectURL(blob);
+
+                                        // Обновляем копию объекта с обновленной аватаркой
+                                        updatedUser.avatar = avatar;
+
+                                        // Установка обновленного пользователя в состояние
+                                        setUser({
+                                            _id: updatedUser.id,
+                                            ...updatedUser
+                                        });
+                                    })
+                            })
+                            .catch(err => {
+                                console.error('Error:', err);
+                            });
+                    } else {
+                        updatedUser.avatar = null
+
+                        setUser({
+                            _id: updatedUser.id,
+                            ...updatedUser
+                        })
+                    }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, []);
+
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <View className="flex-1 items-center bg-white">
             <View className="items-center justify-center mt-[10vh]">
@@ -105,7 +171,7 @@ const Profile: FC = () => {
                         <></>
                     }
 
-                    {user?.role === "author" ?
+                    {user?.role === "author" || user?.role === "admin" ?
                         <Pressable onPress={() => navigation.navigate("AuthorCourses")} className="flex-row mt-7 items-center justify-between pb-2">
                             <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 18}} className="text-[#222222]">Мои курсы</Text>
                             <SimpleLineIcons name="arrow-right" size={16} color="black" />

@@ -9,6 +9,14 @@ interface IMenuItemProps {
     currentRoute?: string
 }
 
+/**
+ * Отображает элемент нижнего меню
+ *
+ * @param {IMenuItemProps} currentRoute - активная страница
+ * @param {INavigation} nav - функция навигации
+ * @param {MenuItemType} item - элемент нижнего меню
+ * @return {ReactNode} отображает компонент
+ */
 const MenuItem: FC<IMenuItemProps> = ({currentRoute, nav, item}) => {
     const isActive = currentRoute === item.path
 

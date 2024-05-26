@@ -15,11 +15,17 @@ import navigation from "@/navigation/Navigation";
 import {useNavigation} from "@react-navigation/native";
 import {IExercise} from "@/types/exercise.interface";
 import {CheckBox} from "react-native-elements";
+import {insertCompletedTask, isTaskCompleted} from "../../../../database/database";
 
 type CourseLecturePageProps = StackScreenProps<TypeRootStackParamList, 'CourseLecture'>;
 type TypeLectureState = ILecture | null
 type TypeExerciseState = IExercise | null
 
+/**
+ * Компонент страницы лекции
+ * @param route - активная страница
+ * @constructor
+ */
 const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
     const navigation = useNavigation();
     // @ts-ignore
@@ -31,7 +37,11 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
     const [lectures, setLectures] = useState<[TypeLectureState]>([null])
     const [exercises, setExercises] = useState<[TypeExerciseState]>([null])
     const [checked, setChecked] = useState(0)
+    const [isCompleted, setIsCompleted] = useState(false)
 
+    /**
+     * Метод для обработки нажатия на кнопку "Далее"
+     */
     const onNextPress = () => {
         if (counter/2 >= exercises.length || counter/2 >= lectures.length) {
             Alert.alert("Больше лекций нет")
@@ -40,7 +50,15 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
 
         setCounter(counter + 1)
         if (counter % 2 !== 0) {
-            console.log(counter)
+            // @ts-ignore
+            isTaskCompleted(user?._id, exercises[index]?.id, (completed) => {
+                if (completed) {
+                    console.log(completed)
+                    setIsCompleted(true)
+                } else {
+                    setIsCompleted(false)
+                }
+            });
             return
         }
 
@@ -52,6 +70,9 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
         setIndex(index + 1)
     }
 
+    /**
+     * Метод для обработки нажатия на кнопку "Назад"
+     */
     const onPrevPress = () => {
         if (counter === 1) {
             Alert.alert("Больше лекций нет")
@@ -63,14 +84,27 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
             return
         }
 
-
         if (index === 0) {
             Alert.alert("Больше лекций нет")
             return
         }
         setIndex(index - 1)
+
+        // @ts-ignore
+        isTaskCompleted(user?._id, exercises[index-1]?.id, (completed) => {
+            if (completed) {
+                setIsCompleted(true)
+            } else {
+                setIsCompleted(false)
+            }
+        });
     }
 
+    /**
+     * Метод для сортировки лекций по id
+     * @param a
+     * @param b
+     */
     const sortLecturesById = (a: TypeLectureState, b: TypeLectureState) => {
         // @ts-ignore
         if (a?.id < b?.id) {
@@ -83,6 +117,11 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
         return 0
     }
 
+    /**
+     * Метод для сортировки задач по id
+      * @param a
+     * @param b
+     */
     const sortExercisesById = (a: TypeExerciseState, b: TypeExerciseState) => {
         // @ts-ignore
         if (a?.id < b?.id) {
@@ -95,6 +134,9 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
         return 0
     }
 
+    /**
+     * Метод для получения лекций и заданий
+     */
     useEffect(() => {
         fetch(`${url}/lectures/course/${course?._id}`, {method: 'GET'})
             .then(
@@ -141,50 +183,47 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
             )
     }, []);
 
+    /**
+     * Метод для обработки нажатия на кнопку "Отправить"
+     */
     const submit = () => {
-        switch (checked) {
-            case 0: {
-                if (exercises[index]?.correctAnswer === exercises[index]?.firstVariant) {
-                    Alert.alert("Верно")
-                } else {
-                    Alert.alert("Неверно")
-                }
 
-                break
-            }
-            case 1: {
-                if (exercises[index]?.correctAnswer === exercises[index]?.secondVariant) {
-                    Alert.alert("Верно")
-                } else {
-                    Alert.alert("Неверно")
-                }
-
-                break
-            }
-            case 2: {
-                if (exercises[index]?.correctAnswer === exercises[index]?.thirdVariant) {
-                    Alert.alert("Верно")
-                } else {
-                    Alert.alert("Неверно")
-                }
-
-                break
-            }
-            case 3: {
-                if (exercises[index]?.correctAnswer === exercises[index]?.fourthVariant) {
-                    Alert.alert("Верно")
-                } else {
-                    Alert.alert("Неверно")
-                }
-
-                break
-            }
-            default: {
-                break
-            }
+        if (isCompleted) {
+            Alert.alert("Вы уже успешно прошли задание");
+            return
         }
-    }
 
+        let isCorrect = false;
+        switch (checked) {
+            case 0:
+                isCorrect = exercises[index]?.correctAnswer === exercises[index]?.firstVariant;
+                break;
+            case 1:
+                isCorrect = exercises[index]?.correctAnswer === exercises[index]?.secondVariant;
+                break;
+            case 2:
+                isCorrect = exercises[index]?.correctAnswer === exercises[index]?.thirdVariant;
+                break;
+            case 3:
+                isCorrect = exercises[index]?.correctAnswer === exercises[index]?.fourthVariant;
+                break;
+            default:
+                break;
+        }
+
+        if (isCorrect) {
+            Alert.alert("Верно");
+            // @ts-ignore
+            insertCompletedTask(user?._id, exercises[index]?.id);
+            setIsCompleted(true)
+        } else {
+            Alert.alert("Неверно");
+        }
+    };
+
+    /**
+     * Возврат html кода компонента
+     */
     // @ts-ignore
     return (
         <View className="flex-1 bg-white">
@@ -264,6 +303,7 @@ const CourseLecture: FC<CourseLecturePageProps> = ({route}) => {
                             <Button classNaming="mt-5 bg-[#637BFF] self-center justify-center items-center rounded-3xl text-white w-[50%] h-[5vh] p-1" onPress={submit}>
                                 <Text>Ответить</Text>
                             </Button>
+                            {isCompleted ? <Text style={{fontFamily: "Montserrat_500Medium", fontSize: 15, color: "green"}} className="text-black mt-2 text-center">Вы успешно прошли задание</Text> : null}
                         </>
                         :
                         <>

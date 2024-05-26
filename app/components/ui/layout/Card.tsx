@@ -4,6 +4,12 @@ import {Octicons} from "@expo/vector-icons";
 import {ICourse} from "@/types/card.interface";
 import {TypeCourseState} from "@/components/screens/home/Home";
 
+/**
+ * Отображает карточку курса
+ *
+ * @param {PropsWithChildren<{ course: TypeCourseState, onPress?: () => void }>} - Параметры карточки
+ * @return {JSX.Element} - html код компонента
+ */
 const Card: FC<PropsWithChildren<{ course: TypeCourseState, onPress?: () => void }>> = ({course, onPress}) => {
     return (
         <Pressable

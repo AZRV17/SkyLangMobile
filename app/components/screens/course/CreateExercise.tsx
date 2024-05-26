@@ -9,6 +9,11 @@ import {url} from "../../../../config/config";
 
 type CreateExerciseProps = StackScreenProps<TypeRootStackParamList, 'CreateExercise'>
 
+/**
+ * Компонент для создания задания
+ * @param route - активная страница
+ * @constructor
+ */
 const CreateExercise: FC<CreateExerciseProps> = ({route}) => {
     const navigation = useNavigation()
     // @ts-ignore
@@ -22,6 +27,9 @@ const CreateExercise: FC<CreateExerciseProps> = ({route}) => {
     const [correctAnswer, setCorrectAnswer] = useState('')
     const [difficulty, setDifficulty] = useState('')
 
+    /**
+     * Метод для создания задания
+     */
     const createExercise = () => {
         fetch(url + "/exercises/", {
             method: 'POST',
@@ -48,6 +56,9 @@ const CreateExercise: FC<CreateExerciseProps> = ({route}) => {
         )
     }
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View className="flex-1 bg-white">

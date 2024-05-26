@@ -10,6 +10,14 @@ interface PasswordInputProps extends TextInputProps {
     classNaming?: string;
 }
 
+/**
+ * Отображает поле ввода пароля
+ *
+ * @param {Function} onChange - Функция изменения значения поля
+ * @param {string} classNaming - Класс стилей tailwind
+ * @param {object} props - Дополнительные свойства
+ * @return {JSX.Element} html код компонента
+ */
 const PasswordInput: FC<PasswordInputProps> = ({onChange, classNaming, ...props}) => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);

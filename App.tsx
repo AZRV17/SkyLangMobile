@@ -4,11 +4,17 @@ import {Text, TextInput, View} from 'react-native';
 import AuthProvider from "@/providers/AuthProvider";
 import {SafeAreaProvider} from "react-native-safe-area-context";
 import Navigation from "@/navigation/Navigation";
+import {useEffect} from "react";
+import {initDB} from "./database/database";
 
 const queryClient = new QueryClient()
 
 export default function App() {
-  return (
+    useEffect(() => {
+        initDB()
+    }, []);
+
+    return (
       <QueryClientProvider client={queryClient}>
           <AuthProvider>
               <SafeAreaProvider>
@@ -18,5 +24,5 @@ export default function App() {
           </AuthProvider>
           <StatusBar style="dark"/>
       </QueryClientProvider>
-  );
+    );
 }

@@ -1,5 +1,8 @@
 import {IMenuItem} from "./menu.interface";
 
+/**
+ * Данные для нижнего меню
+ */
 export const menuData: IMenuItem[] = [
     {
         path: 'Home',

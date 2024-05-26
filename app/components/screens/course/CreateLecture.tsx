@@ -10,6 +10,11 @@ import {url} from "../../../../config/config";
 
 type CreateLectureProps = StackScreenProps<TypeRootStackParamList, 'CreateLecture'>
 
+/**
+ * Компонент создания лекции
+ * @param route - активная страница
+ * @constructor
+ */
 const CreateLecture: FC<CreateLectureProps> = ({route}) => {
     const navigation = useNavigation()
     // @ts-ignore
@@ -17,6 +22,9 @@ const CreateLecture: FC<CreateLectureProps> = ({route}) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
+    /**
+     * Метод для создания лекции
+     */
     const createLecture = () => {
         fetch(url + "/lectures/", {
             method: 'POST',
@@ -37,6 +45,9 @@ const CreateLecture: FC<CreateLectureProps> = ({route}) => {
         )
     }
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View className="flex-1 bg-white">

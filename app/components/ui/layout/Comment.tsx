@@ -3,6 +3,12 @@ import {Image, Pressable, Text, View} from 'react-native'
 import {Octicons} from "@expo/vector-icons";
 import {TypeCommentState} from "@/components/screens/course/CourseMainPage";
 
+/**
+ * Отображает комментарий для курса
+ *
+ * @param {PropsWithChildren<{ comment: TypeCommentState }>} comment - Содержит информацию о комментарии.
+ * @return {JSX.Element} html код компонента
+ */
 const Comment: FC<PropsWithChildren<{ comment: TypeCommentState }>> = ({comment}) => {
     return (
         <View

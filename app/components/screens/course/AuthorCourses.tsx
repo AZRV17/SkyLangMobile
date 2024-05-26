@@ -13,6 +13,10 @@ import Card from "@/components/ui/layout/Card";
 import Button from "@/components/ui/layout/Button";
 import { AntDesign } from '@expo/vector-icons';
 
+/**
+ * Компонент для отображения курсов автора
+ * @constructor
+ */
 const AuthorCourses: FC = () => {
     const navigation = useNavigation();
     const user = useAuth()
@@ -23,6 +27,9 @@ const AuthorCourses: FC = () => {
         return <Loader />
     }
 
+    /**
+     * Метод для получения курсов автора
+     */
     const fetchData = () => {
         // setLoading(true);
         fetch(`${url}/courses/author/${user?.user?._id}`, {method: 'GET'}).then(res => {
@@ -72,6 +79,9 @@ const AuthorCourses: FC = () => {
         fetchData()
     }, []);
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <View className="flex-1">
             <ScrollView

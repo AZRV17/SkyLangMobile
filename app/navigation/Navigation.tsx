@@ -5,18 +5,17 @@ import {NavigationContainer, useNavigation, useNavigationContainerRef} from "@re
 import BottomMenu from "@/components/ui/layout/bottom-menu/BottomMenu";
 import PrivateNavigation from "@/navigation/PrivateNavigation";
 
+/**
+ * Отображает навигацию приложения.
+ *
+ * @return {JSX.Element} html код компонента.
+ */
 const Navigation: FC = () => {
     const {user} = useAuth()
 
     const [currentRoute, setCurrentRoute] = useState<string | undefined>(
         undefined
     )
-
-    // useEffect(() => {
-    //     if (user) {
-    //         navRef.navigate("Home")
-    //     }
-    // }, [])
 
     const navRef = useNavigationContainerRef()
 

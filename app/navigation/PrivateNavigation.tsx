@@ -21,6 +21,11 @@ import UpdateExercise from "@/components/screens/course/UpdateExercise";
 
 const Stack = createNativeStackNavigator<TypeRootStackParamList>()
 
+/**
+ * Генерирует навигационнуй стэк для приложения.
+ *
+ * @return {JSX.Element} html код компонента.
+ */
 const PrivateNavigation: FC = () => {
     const {user} = useAuth()
 

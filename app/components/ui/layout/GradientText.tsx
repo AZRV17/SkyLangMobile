@@ -4,7 +4,12 @@ import MaskedView from "@react-native-masked-view/masked-view";
 import {LinearGradient} from "expo-linear-gradient";
 import {Prompt_400Regular, Prompt_500Medium, useFonts} from "@expo-google-fonts/prompt";
 
-
+/**
+ * Отображает текст с градиентом
+ * @param colors - цвета
+ * @param props - дополнительные свойства
+ * @constructor
+ */
 // @ts-ignore
 const GradientText = ({colors = [], ...props}) => {
     const [fontsLoaded] = useFonts({

@@ -57,6 +57,9 @@ const styles = StyleSheet.create({
 
 const CELL_COUNT = 4;
 
+/**
+ * Отображает страницу смены пароля
+ */
 const ResetPassword: FC = () => {
     const [value, setValue] = useState('');
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
@@ -75,6 +78,9 @@ const ResetPassword: FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [tries, setTries] = useState(0);
 
+    /**
+     * Функция для обновления таймера
+     */
     useEffect(() => {
         let intervalId: any;
         if (timer > 0) {
@@ -89,6 +95,7 @@ const ResetPassword: FC = () => {
         return () => clearInterval(intervalId);
     }, [timer]);
 
+    // Метод для загрузки шрифтов
     const [fontsLoaded] = useFonts({
         Prompt_400Regular,
         Inter_600SemiBold,
@@ -100,6 +107,9 @@ const ResetPassword: FC = () => {
         return <Text>Loading...</Text>;
     }
 
+    /**
+     * Метод для получения нового кода
+     */
     const handleResendCode = () => {
         fetch(`${url}/users/resetPassword`, {method: 'PUT', body: JSON.stringify({"email": email})}).then(res => {
             return res.json(); // Парсим JSON из тела ответа
@@ -116,6 +126,9 @@ const ResetPassword: FC = () => {
         setTimer(15);
     };
 
+    /**
+     * Метод для изменения пароля
+     */
     const resetPassword = () => {
         var emailRe = new RegExp(".+@.+\\..+");
 
@@ -146,6 +159,9 @@ const ResetPassword: FC = () => {
         setIsPass(true)
     }
 
+    /**
+     * Метод для неправильного кода
+     */
     const onIncorrectCode = () => {
         setModalVisible(false)
         setTries(tries + 1)
@@ -156,6 +172,9 @@ const ResetPassword: FC = () => {
         handleResendCode()
     }
 
+    /**
+     * Метод для обработки нажатия на кнопку "Сменить пароль"
+     */
     const onSubmit = () => {
         if (code !== parseInt(value)) {
             setModalVisible(true)
@@ -172,6 +191,9 @@ const ResetPassword: FC = () => {
         navigation.navigate("Auth")
     }
 
+    /**
+     * Отображение html кода компонента
+     * */
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <LinearGradient

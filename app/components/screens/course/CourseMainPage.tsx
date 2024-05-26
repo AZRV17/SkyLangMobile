@@ -21,6 +21,11 @@ type CourseMainPageProps = StackScreenProps<TypeRootStackParamList, 'CourseMainP
 
 export type TypeCommentState = IComment | null
 
+/**
+ * Отображает страницу курса
+ * @param route - активная страница
+ * @constructor
+ */
 const CourseMainPage: FC<CourseMainPageProps> = ({route}) => {
     const navigation = useNavigation()
     // @ts-ignore
@@ -84,6 +89,18 @@ const CourseMainPage: FC<CourseMainPageProps> = ({route}) => {
                     }
                 )
         }
+    }
+
+    const deleteCourse = () => {
+        fetch(`${url}/courses/${course?._id}`, {method: 'DELETE'})
+            .then(
+                res => {
+                    if (res.ok) {
+                        // @ts-ignore
+                        navigation.navigate("Home")
+                    }
+                }
+            )
     }
 
     useEffect(() => {
@@ -226,13 +243,27 @@ const CourseMainPage: FC<CourseMainPageProps> = ({route}) => {
                         : <></>}
                 </View>
             </ScrollView>
-            {!isReg ? <Button
-                classNaming="bg-[#637BFF] mt-3 rounded-3xl self-center justify-self-center items-center justify-center p-3 w-[45%] mb-5 active:bg-[#758aff]"
-                styles={{ position: 'absolute', bottom: 0, alignSelf: 'center' }}
-                onPress={() => {onPress()}}
-            >
-                <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 20}} className="text-white">Записаться</Text>
-            </Button> :
+            {!isReg ?
+                <>
+                    {user?.role === "admin" ?
+                        <Button
+                            classNaming="bg-[#637BFF] mt-3 rounded-3xl self-center justify-self-center items-center justify-center p-3 w-[45%] mb-5 active:bg-[#758aff]"
+                            styles={{ position: 'absolute', bottom: 0, alignSelf: 'center' }}
+                            onPress={() => {deleteCourse()}}
+                        >
+                            <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 20}} className="text-white">Удалить</Text>
+                        </Button>
+                        :
+                        <Button
+                            classNaming="bg-[#637BFF] mt-3 rounded-3xl self-center justify-self-center items-center justify-center p-3 w-[45%] mb-5 active:bg-[#758aff]"
+                            styles={{ position: 'absolute', bottom: 0, alignSelf: 'center' }}
+                            onPress={() => {onPress()}}
+                        >
+                            <Text style={{fontFamily: "Montserrat_600SemiBold", fontSize: 20}} className="text-white">Записаться</Text>
+                        </Button>
+                    }
+                </>
+                :
                 <>
                     <View className="items-center justify-center bg-[#F6F6F6] p-[6%] rounded-3xl">
                         <TextInput
@@ -255,7 +286,6 @@ const CourseMainPage: FC<CourseMainPageProps> = ({route}) => {
                     </View>
                 </>
             }
-
         </View>
     )
 }

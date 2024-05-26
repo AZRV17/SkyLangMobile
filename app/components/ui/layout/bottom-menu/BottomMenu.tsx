@@ -10,9 +10,19 @@ interface IBottomMenu {
     currentRoute?: string
 }
 
+/**
+ * Отображает нижнее меню
+ *
+ * @param {IBottomMenu} currentRoute - активная страница
+ * @param {INav} nav - функция навигации
+ * @return {JSX.Element} html код компонента
+ */
 const BottomMenu: FC<IBottomMenu> = ({currentRoute, nav}) => {
     const {bottom, right, left} = useSafeAreaInsets()
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <View
             className="pt-5 px-3 flex-row justify-between items-center bg-white w-full rounded-t-3xl shadow"

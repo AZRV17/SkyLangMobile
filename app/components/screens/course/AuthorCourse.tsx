@@ -21,6 +21,12 @@ type AuthorCourseProps = StackScreenProps<TypeRootStackParamList, 'AuthorCourse'
 type TypeLectureState = ILecture | null
 type TypeExerciseState = IExercise | null
 
+/**
+ * Отображает страницу курса автора
+ *
+ * @param {FC<AuthorCourseProps>} route - активная страница
+ * @return {JSX.Element} html код компонента
+ */
 const AuthorCourse: FC<AuthorCourseProps> = ({route}) => {
     const navigation = useNavigation()
     // @ts-ignore
@@ -29,6 +35,11 @@ const AuthorCourse: FC<AuthorCourseProps> = ({route}) => {
     const [lectures, setLectures] = useState<[TypeLectureState]>([null])
     const [exercises, setExercises] = useState<[TypeExerciseState]>([null])
 
+    /**
+     * Метод для сортировки лекций по id
+     * @param a
+     * @param b
+     */
     const sortLecturesById = (a: TypeLectureState, b: TypeLectureState) => {
         // @ts-ignore
         if (a?.id < b?.id) {
@@ -41,6 +52,11 @@ const AuthorCourse: FC<AuthorCourseProps> = ({route}) => {
         return 0
     }
 
+    /**
+     * Метод для сортировки задач по id *
+     * @param a
+     * @param b
+     */
     const sortExercisesById = (a: TypeExerciseState, b: TypeExerciseState) => {
         // @ts-ignore
         if (a?.id < b?.id) {
@@ -53,6 +69,9 @@ const AuthorCourse: FC<AuthorCourseProps> = ({route}) => {
         return 0
     }
 
+    /**
+     * Загрузка лекций и задач
+     */
     useEffect(() => {
         fetch(`${url}/lectures/course/${course?._id}`, {method: 'GET'})
             .then(
@@ -96,6 +115,9 @@ const AuthorCourse: FC<AuthorCourseProps> = ({route}) => {
             )
     }, []);
 
+    /**
+     * Возврат html кода компонента
+     */
     return (
         <View className="flex-1 bg-white">
             <LinearGradient
