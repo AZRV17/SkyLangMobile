@@ -174,7 +174,7 @@ const Auth: FC = () => {
             });
     }
 
-    const iОтображение html кода компонентаsLoading = false
+    const isLoading = false
 
     /**
      * Метод для загрузки шрифтов
